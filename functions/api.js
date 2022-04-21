@@ -23,7 +23,8 @@ app.use(express.urlencoded({ extended: true }));
 // const router = express.Router()
 // simple route
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../src/index.html'));
+  res.render('index');
+  // res.sendFile(path.join(__dirname, '../src/index.html'));
   // res.json({ message: "Welcome to Auth API, please visit the '/api/docs' endpoint to see the full documentation" });
 })
 
@@ -37,11 +38,11 @@ db.mongoose
     useUnifiedTopology: true
   })
   .then(() => {
-    console.log("Successfully connect to MongoDB.");
+    // console.log("Successfully connect to MongoDB.");
     initial();
   })
   .catch(err => {
-    console.error("Connection error", err);
+    // console.error("Connection error", err);
     process.exit();
   });
 
@@ -52,29 +53,32 @@ function initial() {
         name: "user"
       }).save(err => {
         if (err) {
-          console.log("error", err);
+          // console.log("error", err);
         }
-        console.log("added 'user' to roles collection");
+        // console.log("added 'user' to roles collection");
       });
       new Role({
         name: "moderator"
       }).save(err => {
         if (err) {
-          console.log("error", err);
+          // console.log("error", err);
         }
-        console.log("added 'moderator' to roles collection");
+        // console.log("added 'moderator' to roles collection");
       });
       new Role({
         name: "admin"
       }).save(err => {
         if (err) {
-          console.log("error", err);
+          // console.log("error", err);
         }
-        console.log("added 'admin' to roles collection");
+        // console.log("added 'admin' to roles collection");
       });
     }
   });
 }
+
+// Setting template engine
+app.set("view engine", "ejs")
 
 // app.use('/', router)
 require('../src/app/routes/auth.routes')(app);
