@@ -1,18 +1,18 @@
 "use strict"
 const express = require('express');
 const serverless = require('serverless-http');
-const cors = require("cors");
+// const cors = require("cors");
 const app = express()
 const swaggerUI = require("swagger-ui-express");
 const swaggerJSON = require("../src/swagger.json");
-const path = require('path');
+// const path = require('path');
 
-app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swaggerJSON));
+app.use("/", swaggerUI.serve, swaggerUI.setup(swaggerJSON));
 
-var corsOptions = {
-  origin: "*"
-};
-app.use(cors(corsOptions));
+// var corsOptions = {
+//   origin: "*"
+// };
+// app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
 app.use(express.json());
@@ -22,11 +22,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // const router = express.Router()
 // simple route
-app.get('/', (req, res) => {
-  res.render('index');
-  // res.sendFile(path.join(__dirname, '../src/index.html'));
-  // res.json({ message: "Welcome to Auth API, please visit the '/api/docs' endpoint to see the full documentation" });
-})
+// app.get('/', (req, res) => {
+//   res.render('index');
+//   // res.sendFile(path.join(__dirname, '../src/index.html'));
+//   // res.json({ message: "Welcome to Auth API, please visit the '/api/docs' endpoint to see the full documentation" });
+// })
 
 const db = require("../src/app/models");
 const Role = db.role;
