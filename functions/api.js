@@ -1,18 +1,18 @@
 "use strict"
 const express = require('express');
 const serverless = require('serverless-http');
-// const cors = require("cors");
 const app = express()
-const swaggerUI = require("swagger-ui-express");
-const swaggerJSON = require("../src/swagger.json");
+// const swaggerUI = require("swagger-ui-express");
+// const swaggerJSON = require("../src/swagger.json");
+const cors = require("cors");
 // const path = require('path');
 
-app.use("/", swaggerUI.serve, swaggerUI.setup(swaggerJSON));
+// app.use("/", swaggerUI.serve, swaggerUI.setup(swaggerJSON));
 
-// var corsOptions = {
-//   origin: "*"
-// };
-// app.use(cors(corsOptions));
+var corsOptions = {
+  origin: true
+};
+app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
 app.use(express.json());
@@ -22,11 +22,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // const router = express.Router()
 // simple route
-// app.get('/', (req, res) => {
-//   res.render('index');
-//   // res.sendFile(path.join(__dirname, '../src/index.html'));
-//   // res.json({ message: "Welcome to Auth API, please visit the '/api/docs' endpoint to see the full documentation" });
-// })
+app.get('/api', (req, res) => {
+  // res.render('index');
+  // res.sendFile(path.join(__dirname, '../src/index.html'));
+  res.json({ message: "Welcome to Auth API" });
+})
 
 const db = require("../src/app/models");
 const Role = db.role;
@@ -77,12 +77,21 @@ function initial() {
   });
 }
 
+app.use(function (req, res, next) {
+  res.header(
+    "Access-Control-Allow-Headers",
+    "x-access-token, Origin, Content-Type, Accept"
+  );
+  next();
+});
 // Setting template engine
-app.set("view engine", "ejs")
+// app.set("view engine", "ejs")
 
-// app.use('/', router)
-require('../src/app/routes/auth.routes')(app);
-require('../src/app/routes/user.routes')(app);
+const router = require('../src/app/routes');
+app.use(router)
+
+// require('../src/app/routes/auth.routes')(app);
+// require('../src/app/routes/user.routes')(app);
 
 module.exports = app
 module.exports.handler = serverless(app)
