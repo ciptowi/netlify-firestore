@@ -1,0 +1,410 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a REST API application built using Express JS and Mongo DB. implement authentication security with JSON web token for 3 role models [ 'user', 'admin', 'moderator' ].",
+    "version": "1.0.0",
+    "title": "Authentication with Role Models",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "name": "Cipto Widarto",
+      "email": "ciptowidarto@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "node-api-v1.netlify.app",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "public",
+      "description": "Operations to public"
+    },
+    {
+      "name": "auth",
+      "description": "Operations about authentication"
+    },
+    {
+      "name": "user",
+      "description": "Operations about user"
+    },
+    {
+      "name": "admin",
+      "description": "Operations about admin"
+    },
+    {
+      "name": "moderator",
+      "description": "Operations about moderator"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/test/all": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "string",
+              "example": "Public Content"
+            }
+          }
+        }
+      }
+    },
+    "/test/user": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "string",
+              "example": "User Content"
+            }
+          },
+          "401": {
+            "description": "Failed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized!"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Failed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "No token provided!"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "x-access-token": []
+          }
+        ]
+      }
+    },
+    "/test/admin": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "string",
+              "example": "Admin Content"
+            }
+          },
+          "403": {
+            "description": "Failed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "x-access-token": []
+          }
+        ]
+      }
+    },
+    "/test/mod": {
+      "get": {
+        "tags": [
+          "moderator"
+        ],
+        "summary": "",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "string",
+              "example": "Moderator Content"
+            }
+          },
+          "403": {
+            "description": "Failed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "x-access-token": []
+          }
+        ]
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Create user",
+        "description": "",
+        "operationId": "createUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created user with roles, can choose one or if empty by default choose 'user'",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "roles": {
+                  "type": "array",
+                  "example": [
+                    "user",
+                    "admin",
+                    "moderator"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "User was registered successfully!"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erorr",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Login user into the system",
+        "description": "",
+        "operationId": "loginUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "List of user object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "roles": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "accessToken": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Failed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "User Not found"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Failed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "accessToken": {
+                  "type": "null"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid Password!"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erorr",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "x-access-token": {
+      "type": "apiKey",
+      "name": "x-access-token",
+      "in": "header"
+    }
+  }
+}
