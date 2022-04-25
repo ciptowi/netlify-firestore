@@ -64,8 +64,10 @@ module.exports = {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       res.status(200).json({
-        message: "SUCCESS",
-        result: docSnap.data()
+        success: true,
+        message: null,
+        data: docSnap.data(),
+        error: null
       })
     } else {
       res.status(404).json({
