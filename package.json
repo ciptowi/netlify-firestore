@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "./src/api.js",
-  "scripts": {},
+  "scripts": {
+    "dev": "netlify dev"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -14,5 +16,8 @@
     "firebase": "^9.6.11",
     "netlify-lambda": "^2.0.15",
     "serverless-http": "^3.0.1"
+  },
+  "devDependencies": {
+    "netlify-cli": "^10.10.2"
   }
 }
