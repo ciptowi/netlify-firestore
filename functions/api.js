@@ -3,6 +3,11 @@ const serverless = require('serverless-http');
 const app = express()
 // const cors = require("cors");
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
+
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
